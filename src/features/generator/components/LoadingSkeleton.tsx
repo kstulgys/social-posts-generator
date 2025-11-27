@@ -26,8 +26,17 @@ const FUNNY_MESSAGES = [
   "Downloading creativity.exe",
 ]
 
+function getRandomIndex(currentIndex: number, max: number): number {
+  let newIndex = Math.floor(Math.random() * max)
+  // Ensure we don't show the same message twice in a row
+  while (newIndex === currentIndex) {
+    newIndex = Math.floor(Math.random() * max)
+  }
+  return newIndex
+}
+
 function FunnyLoadingMessage() {
-  const [messageIndex, setMessageIndex] = useState(0)
+  const [messageIndex, setMessageIndex] = useState(() => Math.floor(Math.random() * FUNNY_MESSAGES.length))
   const [isAnimating, setIsAnimating] = useState(false)
   const [dots, setDots] = useState("")
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -39,7 +48,7 @@ function FunnyLoadingMessage() {
       
       // After exit animation (300ms), change the message
       timeoutRef.current = setTimeout(() => {
-        setMessageIndex((prev) => (prev + 1) % FUNNY_MESSAGES.length)
+        setMessageIndex((prev) => getRandomIndex(prev, FUNNY_MESSAGES.length))
         setIsAnimating(false)
       }, 300)
     }, 2500)
