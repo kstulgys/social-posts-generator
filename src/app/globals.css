@@ -1,0 +1,90 @@
+/* Global styles - minimal CSS for features not handled by Chakra UI */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ambient background effects */
+.ambient-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(150px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow-purple {
+  background: #8b5cf6;
+  top: -200px;
+  left: -200px;
+}
+
+.ambient-glow-pink {
+  background: #ec4899;
+  top: 50%;
+  right: -300px;
+}
+
+.ambient-glow-orange {
+  background: #f97316;
+  bottom: -200px;
+  left: 30%;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(to right, #8b5cf6, #ec4899, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient button animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse animation for skeleton */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

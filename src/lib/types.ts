@@ -1,0 +1,61 @@
+export type Tone = "professional" | "casual" | "humorous" | "urgent" | "inspirational";
+
+export type Platform = "twitter" | "instagram" | "linkedin";
+
+export const ALL_PLATFORMS: Platform[] = ["twitter", "instagram", "linkedin"];
+
+export interface Product {
+  name: string;
+  description: string;
+  price: number;
+  category?: string;
+  tone?: Tone;
+  platforms?: Platform[];
+  includeResearch?: boolean;
+}
+
+export interface SeasonalContext {
+  currentSeason: string;
+  upcomingEvents: string[];
+  marketingAngles: string[];
+}
+
+export interface WebResearchResult {
+  trendingHashtags: string[];
+  marketInsights: string[];
+  seasonalContext?: SeasonalContext;
+  searchQuery: string;
+}
+
+export interface SocialMediaPost {
+  platform: Platform;
+  content: string;
+}
+
+// Error types
+export type ErrorCode =
+  | "VALIDATION_ERROR"
+  | "OPENAI_ERROR"
+  | "OPENAI_RATE_LIMIT"
+  | "OPENAI_INVALID_KEY"
+  | "OPENAI_TIMEOUT"
+  | "PARSE_ERROR"
+  | "INTERNAL_ERROR";
+
+export class AppError extends Error {
+  constructor(
+    message: string,
+    public code: ErrorCode,
+    public statusCode: number = 500,
+    public details?: unknown
+  ) {
+    super(message);
+    this.name = "AppError";
+  }
+}
+
+export interface ApiErrorResponse {
+  error: string;
+  code: ErrorCode;
+  details?: unknown;
+}
