@@ -28,6 +28,7 @@ export async function generatePostsAction(product: {
   tone?: string;
   platforms?: string[];
   includeResearch?: boolean;
+  language?: string;
 }): Promise<GenerateResponse> {
   try {
     // Validate request

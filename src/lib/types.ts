@@ -2,7 +2,25 @@ export type Tone = "professional" | "casual" | "humorous" | "urgent" | "inspirat
 
 export type Platform = "twitter" | "instagram" | "linkedin";
 
+export type Language = "en" | "es" | "fr" | "de" | "it" | "pt" | "nl" | "pl" | "lt" | "uk" | "zh" | "ja" | "ko";
+
 export const ALL_PLATFORMS: Platform[] = ["twitter", "instagram", "linkedin"];
+
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  en: "English",
+  es: "Spanish",
+  fr: "French",
+  de: "German",
+  it: "Italian",
+  pt: "Portuguese",
+  nl: "Dutch",
+  pl: "Polish",
+  lt: "Lithuanian",
+  uk: "Ukrainian",
+  zh: "Chinese",
+  ja: "Japanese",
+  ko: "Korean",
+};
 
 export interface Product {
   name: string;
@@ -12,6 +30,7 @@ export interface Product {
   tone?: Tone;
   platforms?: Platform[];
   includeResearch?: boolean;
+  language?: Language;
 }
 
 export interface SeasonalContext {

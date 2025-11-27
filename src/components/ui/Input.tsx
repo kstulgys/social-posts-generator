@@ -13,19 +13,36 @@ interface InputProps {
   onBlur?: () => void;
   placeholder?: string;
   disabled?: boolean;
-  inputMode?: "text" | "decimal" | "numeric" | "tel" | "search" | "email" | "url";
+  inputMode?:
+    | "text"
+    | "decimal"
+    | "numeric"
+    | "tel"
+    | "search"
+    | "email"
+    | "url";
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, required, prefix, disabled, ...props }, ref) => {
     return (
-      <Field.Root invalid={!!error} disabled={disabled}>
+      <Field.Root invalid={!!error} disabled={disabled} w="100%">
         {label && (
-          <Field.Label fontSize="sm" fontWeight="medium" color="text.secondary" mb={2}>
-            {label} {required && <Text as="span" color="pink.500">*</Text>}
+          <Field.Label
+            fontSize="sm"
+            fontWeight="medium"
+            color="text.secondary"
+            mb={1}
+          >
+            {label}{" "}
+            {required && (
+              <Text as="span" color="pink.500">
+                *
+              </Text>
+            )}
           </Field.Label>
         )}
-        <Box position="relative">
+        <Box position="relative" w="full">
           {prefix && (
             <Text
               position="absolute"
@@ -39,10 +56,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </Text>
           )}
           <ChakraInput
+            size="lg"
             ref={ref}
+            w="full"
             pl={prefix ? 8 : 4}
             pr={4}
-            py={3}
             bg="background.secondary"
             border="1px solid"
             borderColor={error ? "red.500/50" : "border.default"}
@@ -52,7 +70,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             _focus={{
               outline: "none",
               borderColor: error ? "red.500/50" : "purple.500/50",
-              boxShadow: error ? "0 0 0 2px rgba(239, 68, 68, 0.2)" : "0 0 0 2px rgba(139, 92, 246, 0.2)",
+              boxShadow: error
+                ? "0 0 0 2px rgba(239, 68, 68, 0.2)"
+                : "0 0 0 2px rgba(139, 92, 246, 0.2)",
             }}
             _disabled={{
               opacity: 0.5,

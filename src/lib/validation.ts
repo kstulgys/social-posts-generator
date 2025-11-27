@@ -2,9 +2,11 @@ import { z } from "zod";
 
 export const VALID_TONES = ["professional", "casual", "humorous", "urgent", "inspirational"] as const;
 export const VALID_PLATFORMS = ["twitter", "instagram", "linkedin"] as const;
+export const VALID_LANGUAGES = ["en", "es", "fr", "de", "it", "pt", "nl", "pl", "lt", "uk", "zh", "ja", "ko"] as const;
 
 export const ToneSchema = z.enum(VALID_TONES);
 export const PlatformSchema = z.enum(VALID_PLATFORMS);
+export const LanguageSchema = z.enum(VALID_LANGUAGES);
 
 export const ProductSchema = z.object({
   name: z
@@ -27,6 +29,7 @@ export const ProductSchema = z.object({
     .optional()
     .default(["twitter", "instagram", "linkedin"]),
   includeResearch: z.boolean().optional().default(false),
+  language: LanguageSchema.optional().default("en"),
 });
 
 export const GenerateRequestSchema = z.object({

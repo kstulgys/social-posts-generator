@@ -20,16 +20,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={inter.className} style={{ background: "#09090f", color: "#ffffff" }}>
+      <body
+        className={inter.className}
+        style={{ background: "#09090f", color: "#ffffff" }}
+      >
         {/* Ambient background glows */}
         <div className="ambient-glow ambient-glow-purple" />
         <div className="ambient-glow ambient-glow-pink" />
         <div className="ambient-glow ambient-glow-orange" />
 
-        {/* Main content */}
-        <div style={{ position: "relative", zIndex: 10, minHeight: "100vh" }}>
-          <Provider>{children}</Provider>
-        </div>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

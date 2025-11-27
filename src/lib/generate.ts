@@ -1,5 +1,5 @@
 import { callOpenAI } from "./openai";
-import { Product, SocialMediaPost, Tone, Platform, ALL_PLATFORMS, WebResearchResult } from "./types";
+import { Product, SocialMediaPost, Tone, Platform, Language, ALL_PLATFORMS, LANGUAGE_NAMES, WebResearchResult } from "./types";
 import { config } from "./config";
 import { performWebResearch } from "./webResearch";
 
@@ -134,12 +134,19 @@ function buildPrompt(product: Product, research: WebResearchResult | null): stri
   const tone = product.tone || "professional";
   const toneGuidelines = TONE_GUIDELINES[tone];
   const selectedPlatforms = product.platforms || ALL_PLATFORMS;
+  const language: Language = product.language || "en";
+  const languageName = LANGUAGE_NAMES[language];
 
   // Generate configured number of posts per platform
   const postsPerPlatform = generation.postsPerPlatform;
   const totalPosts = postsPerPlatform * selectedPlatforms.length;
 
   const researchSection = research ? buildResearchSection(research) : "";
+
+  const languageInstruction = language !== "en" 
+    ? `\n## Language Requirement (CRITICAL)
+**Write ALL post content in ${languageName}.** The entire post text must be in ${languageName}, including hashtags where appropriate. Do not use English unless it's a commonly used term in ${languageName}-speaking markets.\n`
+    : "";
 
   return `Generate exactly ${totalPosts} social media posts for this product.
 
@@ -148,7 +155,7 @@ function buildPrompt(product: Product, research: WebResearchResult | null): stri
 - **Description**: ${product.description}
 - **Price**: $${product.price.toFixed(2)}
 ${product.category ? `- **Category**: ${product.category}` : ""}
-
+${languageInstruction}
 ## Tone & Style: ${tone.charAt(0).toUpperCase() + tone.slice(1)}
 ${toneGuidelines}
 
@@ -160,7 +167,7 @@ ${buildPlatformRequirements(selectedPlatforms)}
 ## Output Format
 Return a JSON object with a "posts" array. Each post must have:
 - "platform": one of ${selectedPlatforms.map((p) => `"${p}"`).join(", ")} (lowercase)
-- "content": the post text
+- "content": the post text${language !== "en" ? ` (in ${languageName})` : ""}
 
 Generate ${postsPerPlatform} post(s) per platform. Make each post unique, tailored to its platform's audience, and consistent with the ${tone} tone.
 `;

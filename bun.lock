@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "sintra-trial-frontend",
+      "name": "social-posts-generator",
       "dependencies": {
         "@chakra-ui/react": "^3.30.0",
         "@emotion/react": "^11.14.0",

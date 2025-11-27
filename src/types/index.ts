@@ -2,6 +2,8 @@ export type Tone = "professional" | "casual" | "humorous" | "urgent" | "inspirat
 
 export type Platform = "twitter" | "instagram" | "linkedin";
 
+export type Language = "en" | "es" | "fr" | "de" | "it" | "pt" | "nl" | "pl" | "lt" | "uk" | "zh" | "ja" | "ko";
+
 export interface Product {
   name: string;
   description: string;
@@ -10,6 +12,7 @@ export interface Product {
   tone?: Tone;
   platforms?: Platform[];
   includeResearch?: boolean;
+  language?: Language;
 }
 
 export interface SocialMediaPost {

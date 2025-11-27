@@ -28,7 +28,7 @@ export function Select({ label, options, required, disabled, value, onChange }: 
   };
 
   return (
-    <Box>
+    <Box w="100%">
       {label && (
         <Text fontSize="sm" fontWeight="medium" color="text.secondary" mb={2}>
           {label}{" "}
@@ -82,7 +82,7 @@ export function Select({ label, options, required, disabled, value, onChange }: 
               borderColor="border.default"
               borderRadius="xl"
               py={2}
-              minW="200px"
+              minW="xs"
               boxShadow="0 10px 40px -10px rgba(0, 0, 0, 0.5)"
             >
               {options.map((option) => (

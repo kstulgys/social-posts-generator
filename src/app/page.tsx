@@ -11,8 +11,15 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { generatePostsAction } from "@/actions/generate";
-import { Product, SocialMediaPost, Tone, Platform } from "@/types";
-import { CATEGORY_OPTIONS, ERROR_MESSAGES, DEFAULT_PLATFORMS, VALIDATION } from "@/constants";
+import { Product, SocialMediaPost, Tone, Platform, Language } from "@/types";
+import {
+  CATEGORY_OPTIONS,
+  ERROR_MESSAGES,
+  DEFAULT_PLATFORMS,
+  VALIDATION,
+  LANGUAGE_OPTIONS,
+  DEFAULT_LANGUAGE,
+} from "@/constants";
 import { validateProduct, isValidPriceInput } from "@/utils/validation";
 import { Input, Textarea, Select, Toggle, Button } from "@/components/ui";
 import { BoltIcon } from "@/components/icons";
@@ -32,6 +39,7 @@ const INITIAL_PRODUCT: Product = {
   tone: "professional",
   platforms: DEFAULT_PLATFORMS,
   includeResearch: false,
+  language: DEFAULT_LANGUAGE,
 };
 
 export default function Home() {
@@ -49,7 +57,10 @@ export default function Home() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  const updateProduct = <K extends keyof Product>(field: K, value: Product[K]) => {
+  const updateProduct = <K extends keyof Product>(
+    field: K,
+    value: Product[K]
+  ) => {
     setProduct((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -102,12 +113,23 @@ export default function Home() {
         maxW="fit-content"
         gap={2}
       >
-        <Text fontSize={{ base: "xs", sm: "sm" }} color="orange.300" textAlign="center">
-          <Text as="span" fontSize={{ base: "sm", sm: "md" }}>🚨</Text> Easy there, Shakespeare! This runs on my credit card. Generate responsibly or my landlord gets a new tenant. <Text as="span" fontSize={{ base: "sm", sm: "md" }}>💸🏠</Text>
+        <Text
+          fontSize={{ base: "xs", sm: "sm" }}
+          color="orange.300"
+          textAlign="center"
+        >
+          <Text as="span" fontSize={{ base: "sm", sm: "md" }}>
+            🚨
+          </Text>{" "}
+          Easy there, Shakespeare! This runs on my credit card. Generate
+          responsibly or my landlord gets a new tenant.{" "}
+          <Text as="span" fontSize={{ base: "sm", sm: "md" }}>
+            💸🏠
+          </Text>
         </Text>
       </Flex>
 
-      <Container maxW="5xl">
+      <Container maxW="5xl" px={0}>
         {/* Header */}
         <Box as="header" textAlign="center" mb={12}>
           <Heading as="h1" size="4xl" mb={4}>
@@ -119,7 +141,8 @@ export default function Home() {
             </Text>
           </Heading>
           <Text color="text.secondary" fontSize="lg" maxW="2xl" mx="auto">
-            Generate engaging, platform-optimized posts for your products with AI-powered insights.
+            Generate engaging, platform-optimized posts for your products with
+            AI-powered insights.
           </Text>
         </Box>
 
@@ -160,8 +183,8 @@ export default function Home() {
               maxLength={VALIDATION.DESCRIPTION_MAX_LENGTH}
             />
 
-            {/* Price and Category Row */}
-            <SimpleGrid columns={{ base: 1, sm: 2 }} gap={6}>
+            {/* Price, Category, and Language Row */}
+            <SimpleGrid columns={{ base: 1, sm: 3 }} gap={6} w="100%">
               <Input
                 label="Price"
                 required
@@ -182,6 +205,16 @@ export default function Home() {
                 onChange={(e) => updateProduct("category", e.target.value)}
                 disabled={isLoading}
               />
+
+              <Select
+                label="Language"
+                options={LANGUAGE_OPTIONS}
+                value={product.language || DEFAULT_LANGUAGE}
+                onChange={(e) =>
+                  updateProduct("language", e.target.value as Language)
+                }
+                disabled={isLoading}
+              />
             </SimpleGrid>
 
             {/* Tone Selection */}
@@ -194,7 +227,9 @@ export default function Home() {
             {/* Platform Selection */}
             <PlatformSelector
               value={product.platforms || []}
-              onChange={(platforms: Platform[]) => updateProduct("platforms", platforms)}
+              onChange={(platforms: Platform[]) =>
+                updateProduct("platforms", platforms)
+              }
               disabled={isLoading}
               error={touched.platforms ? errors.platforms : undefined}
             />

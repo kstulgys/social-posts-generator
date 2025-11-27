@@ -1,4 +1,4 @@
-import { Tone, Platform } from "@/types";
+import { Tone, Platform, Language } from "@/types";
 
 export const TONE_OPTIONS: { value: Tone; label: string; emoji: string }[] = [
   { value: "professional", label: "Professional", emoji: "💼" },
@@ -44,6 +44,24 @@ export const ERROR_MESSAGES: Record<string, string> = {
   PARSE_ERROR: "Failed to process the response. Please try again.",
   INTERNAL_ERROR: "Something went wrong. Please try again later.",
 };
+
+export const LANGUAGE_OPTIONS: { value: Language; label: string }[] = [
+  { value: "en", label: "English" },
+  { value: "es", label: "Spanish" },
+  { value: "fr", label: "French" },
+  { value: "de", label: "German" },
+  { value: "it", label: "Italian" },
+  { value: "pt", label: "Portuguese" },
+  { value: "nl", label: "Dutch" },
+  { value: "pl", label: "Polish" },
+  { value: "lt", label: "Lithuanian" },
+  { value: "uk", label: "Ukrainian" },
+  { value: "zh", label: "Chinese" },
+  { value: "ja", label: "Japanese" },
+  { value: "ko", label: "Korean" },
+];
+
+export const DEFAULT_LANGUAGE: Language = "en";
 
 export const VALIDATION = {
   NAME_MAX_LENGTH: 200,
