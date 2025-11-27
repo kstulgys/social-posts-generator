@@ -21,6 +21,12 @@ const PLATFORM_ICONS: Record<Platform, React.ReactNode> = {
 export function PlatformSelector({ value, onChange, disabled, error }: PlatformSelectorProps) {
   const togglePlatform = (platform: Platform) => {
     const isSelected = value.includes(platform);
+    
+    // Prevent unchecking if it's the last selected platform
+    if (isSelected && value.length === 1) {
+      return;
+    }
+    
     const newPlatforms = isSelected
       ? value.filter((p) => p !== platform)
       : [...value, platform];
