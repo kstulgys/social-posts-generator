@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk, DM_Sans } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
+  subsets: ["latin"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-body",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://social-posts-generator.vercel.app"
+  ),
   title: "Social Media Post Generator",
   description: "Generate engaging social media posts for your products with AI",
   icons: {
@@ -38,11 +49,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={inter.className}
-        style={{ background: "#09090f", color: "#ffffff" }}
-      >
+    <html
+      lang="en"
+      className={`dark ${spaceGrotesk.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
+    >
+      <body style={{ background: "#09090f", color: "#ffffff" }}>
         {/* Ambient background glows */}
         <div className="ambient-glow ambient-glow-purple" />
         <div className="ambient-glow ambient-glow-pink" />

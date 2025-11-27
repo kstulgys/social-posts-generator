@@ -7,6 +7,7 @@ import {
   Textarea as ChakraTextarea,
   Flex,
   Field,
+  HStack,
 } from "@chakra-ui/react";
 
 interface TextareaProps {
@@ -92,20 +93,18 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             </Box>
           )}
         </Box>
-        <Flex justify="space-between" mt={2}>
-          {error ? (
+        <HStack justify="space-between" align="flex-start" gap={4}>
+          {error && (
             <Field.ErrorText fontSize="sm" color="red.400">
               {error}
             </Field.ErrorText>
-          ) : (
-            <span />
           )}
           {showCount && maxLength && (
-            <Field.HelperText fontSize="xs" color="text.muted">
+            <Field.HelperText fontSize="xs" color="text.muted" flexShrink={0}>
               {currentLength}/{maxLength}
             </Field.HelperText>
           )}
-        </Flex>
+        </HStack>
       </Field.Root>
     );
   }
