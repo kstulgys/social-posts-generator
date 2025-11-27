@@ -11,6 +11,25 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    title: "Social Media Post Generator",
+    description: "Generate engaging social media posts for your products with AI",
+    images: [
+      {
+        url: "/image.png",
+        width: 1200,
+        height: 630,
+        alt: "Social Media Post Generator",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Social Media Post Generator",
+    description: "Generate engaging social media posts for your products with AI",
+    images: ["/image.png"],
+  },
 };
 
 export default function RootLayout({

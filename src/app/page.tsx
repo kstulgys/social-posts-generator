@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { useState, useMemo } from "react";
+import { useSnapshot } from "valtio"
 import {
   Box,
   Container,
@@ -10,119 +10,34 @@ import {
   SimpleGrid,
   Flex,
   IconButton,
-} from "@chakra-ui/react";
-import {
-  generatePostsAction,
-  generateDescriptionAction,
-} from "@/actions/generate";
-import { Product, SocialMediaPost, Tone, Platform, Language } from "@/types";
+} from "@chakra-ui/react"
+import { Product, Tone, Platform, Language } from "@/types"
 import {
   CATEGORY_OPTIONS,
-  ERROR_MESSAGES,
-  DEFAULT_PLATFORMS,
   VALIDATION,
   LANGUAGE_OPTIONS,
   DEFAULT_LANGUAGE,
-} from "@/constants";
-import { validateProduct, isValidPriceInput } from "@/utils/validation";
-import { Input, Textarea, Select, Toggle, Button } from "@/components/ui";
-import { BoltIcon, SparklesIcon, SpinnerIcon } from "@/components/icons";
+} from "@/constants"
+import { validateProduct } from "@/utils/validation"
+import { Input, Textarea, Select, Toggle, Button } from "@/components/ui"
+import { BoltIcon, SparklesIcon, SpinnerIcon } from "@/components/icons"
 import {
   ToneSelector,
   PlatformSelector,
   ErrorAlert,
   LoadingSkeleton,
   PostsGrid,
-} from "@/features/generator/components";
-
-const INITIAL_PRODUCT: Product = {
-  name: "",
-  description: "",
-  price: 0,
-  category: "",
-  tone: "professional",
-  platforms: DEFAULT_PLATFORMS,
-  includeResearch: false,
-  language: DEFAULT_LANGUAGE,
-};
+} from "@/features/generator/components"
+import {
+  generatorState,
+  generatorActions,
+} from "@/stores/generator"
 
 export default function Home() {
-  const [product, setProduct] = useState<Product>(INITIAL_PRODUCT);
-  const [priceInput, setPriceInput] = useState("");
-  const [posts, setPosts] = useState<SocialMediaPost[]>([]);
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const errors = useMemo(() => validateProduct(product), [product]);
-  const isValid = Object.keys(errors).length === 0;
-
-  const handleBlur = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-  };
-
-  const updateProduct = <K extends keyof Product>(
-    field: K,
-    value: Product[K]
-  ) => {
-    setProduct((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handlePriceChange = (value: string) => {
-    if (isValidPriceInput(value)) {
-      setPriceInput(value);
-      updateProduct("price", value === "" ? 0 : parseFloat(value) || 0);
-    }
-  };
-
-  const handleGenerateDescription = async () => {
-    if (!product.name.trim()) {
-      setTouched((prev) => ({ ...prev, name: true }));
-      return;
-    }
-
-    setIsGeneratingDescription(true);
-
-    try {
-      const result = await generateDescriptionAction(
-        product.name,
-        product.language || DEFAULT_LANGUAGE
-      );
-      if (result.success) {
-        updateProduct("description", result.description);
-      }
-    } catch {
-      // Silently fail for description generation
-    } finally {
-      setIsGeneratingDescription(false);
-    }
-  };
-
-  const handleGeneratePosts = async () => {
-    setTouched({ name: true, description: true, price: true, platforms: true });
-
-    if (!isValid) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await generatePostsAction(product);
-      if (result.success) {
-        setPosts(result.posts);
-      } else {
-        const errorCode = result.code || "INTERNAL_ERROR";
-        setError(ERROR_MESSAGES[errorCode] || result.error);
-        setPosts([]);
-      }
-    } catch {
-      setError("An unexpected error occurred. Please try again.");
-      setPosts([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const state = useSnapshot(generatorState)
+  const product = state.product as Product
+  const errors = validateProduct(product)
+  const isValid = Object.keys(errors).length === 0
 
   return (
     <Box as="main" minH="100vh" py={12} px={{ base: 4, sm: 6, lg: 8 }}>
@@ -189,24 +104,28 @@ export default function Home() {
             <Input
               label="Product Name"
               required
-              value={product.name}
-              onChange={(e) => updateProduct("name", e.target.value)}
-              onBlur={() => handleBlur("name")}
+              value={state.product.name}
+              onChange={(e) =>
+                generatorActions.updateProduct("name", e.target.value)
+              }
+              onBlur={() => generatorActions.setTouched("name")}
               placeholder="EcoBottle Pro"
-              disabled={isLoading}
-              error={touched.name ? errors.name : undefined}
+              disabled={state.isLoading}
+              error={state.touched.name ? errors.name : undefined}
             />
 
             {/* Description */}
             <Textarea
               label="Description"
               required
-              value={product.description}
-              onChange={(e) => updateProduct("description", e.target.value)}
-              onBlur={() => handleBlur("description")}
+              value={state.product.description}
+              onChange={(e) =>
+                generatorActions.updateProduct("description", e.target.value)
+              }
+              onBlur={() => generatorActions.setTouched("description")}
               placeholder="Revolutionary reusable water bottle with built-in UV purification..."
-              disabled={isLoading || isGeneratingDescription}
-              error={touched.description ? errors.description : undefined}
+              disabled={state.isLoading || state.isGeneratingDescription}
+              error={state.touched.description ? errors.description : undefined}
               showCount
               maxLength={VALIDATION.DESCRIPTION_MAX_LENGTH}
               actionButton={
@@ -214,14 +133,16 @@ export default function Home() {
                   aria-label="Generate description with AI"
                   size="xs"
                   variant="ghost"
-                  onClick={handleGenerateDescription}
+                  onClick={generatorActions.generateDescription}
                   disabled={
-                    isLoading || isGeneratingDescription || !product.name.trim()
+                    state.isLoading ||
+                    state.isGeneratingDescription ||
+                    !state.product.name.trim()
                   }
                   color="purple.400"
                   _hover={{ bg: "purple.500/20" }}
                 >
-                  {isGeneratingDescription ? (
+                  {state.isGeneratingDescription ? (
                     <SpinnerIcon size={14} />
                   ) : (
                     <SparklesIcon size={14} />
@@ -237,66 +158,77 @@ export default function Home() {
                 required
                 prefix="$"
                 inputMode="decimal"
-                value={priceInput}
-                onChange={(e) => handlePriceChange(e.target.value)}
-                onBlur={() => handleBlur("price")}
+                value={state.priceInput}
+                onChange={(e) =>
+                  generatorActions.handlePriceChange(e.target.value)
+                }
+                onBlur={() => generatorActions.setTouched("price")}
                 placeholder="49.99"
-                disabled={isLoading}
-                error={touched.price ? errors.price : undefined}
+                disabled={state.isLoading}
+                error={state.touched.price ? errors.price : undefined}
               />
 
               <Select
                 label="Category"
                 options={CATEGORY_OPTIONS}
-                value={product.category || ""}
-                onChange={(e) => updateProduct("category", e.target.value)}
-                disabled={isLoading}
+                value={state.product.category || ""}
+                onChange={(e) =>
+                  generatorActions.updateProduct("category", e.target.value)
+                }
+                disabled={state.isLoading}
               />
 
               <Select
                 label="Language"
                 options={LANGUAGE_OPTIONS}
-                value={product.language || DEFAULT_LANGUAGE}
+                value={state.product.language || DEFAULT_LANGUAGE}
                 onChange={(e) =>
-                  updateProduct("language", e.target.value as Language)
+                  generatorActions.updateProduct(
+                    "language",
+                    e.target.value as Language
+                  )
                 }
-                disabled={isLoading}
+                disabled={state.isLoading}
               />
             </SimpleGrid>
 
             {/* Tone Selection */}
             <ToneSelector
-              value={product.tone || "professional"}
-              onChange={(tone: Tone) => updateProduct("tone", tone)}
-              disabled={isLoading}
+              value={state.product.tone || "professional"}
+              onChange={(tone: Tone) =>
+                generatorActions.updateProduct("tone", tone)
+              }
+              disabled={state.isLoading}
             />
 
             {/* Platform Selection */}
             <PlatformSelector
-              value={product.platforms || []}
+              value={[...(state.product.platforms || [])]}
               onChange={(platforms: Platform[]) =>
-                updateProduct("platforms", platforms)
+                generatorActions.updateProduct("platforms", platforms)
               }
-              disabled={isLoading}
-              error={touched.platforms ? errors.platforms : undefined}
+              disabled={state.isLoading}
+              error={state.touched.platforms ? errors.platforms : undefined}
             />
 
             {/* Research Toggle */}
             <Toggle
               label="Include Market Research"
               description="Search for trending hashtags, seasonal context, and market insights"
-              checked={product.includeResearch ?? false}
-              onChange={(checked) => updateProduct("includeResearch", checked)}
-              disabled={isLoading}
+              checked={state.product.includeResearch ?? false}
+              onChange={(checked) =>
+                generatorActions.updateProduct("includeResearch", checked)
+              }
+              disabled={state.isLoading}
             />
           </VStack>
 
           {/* Generate Button */}
           <Box mt={8}>
             <Button
-              onClick={handleGeneratePosts}
+              onClick={generatorActions.generatePosts}
               disabled={!isValid}
-              isLoading={isLoading}
+              isLoading={state.isLoading}
               icon={<BoltIcon />}
             >
               Generate Posts
@@ -305,14 +237,19 @@ export default function Home() {
         </Box>
 
         {/* Error State */}
-        {error && <ErrorAlert message={error} onRetry={handleGeneratePosts} />}
+        {state.error && (
+          <ErrorAlert
+            message={state.error}
+            onRetry={generatorActions.generatePosts}
+          />
+        )}
 
         {/* Loading State */}
-        {isLoading && <LoadingSkeleton />}
+        {state.isLoading && <LoadingSkeleton />}
 
         {/* Generated Posts */}
-        {!isLoading && <PostsGrid posts={posts} />}
+        {!state.isLoading && <PostsGrid posts={[...state.posts]} />}
       </Container>
     </Box>
-  );
+  )
 }
