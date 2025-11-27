@@ -14,9 +14,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://social-posts-generator.vercel.app"
-  ),
+  metadataBase: new URL("https://social-posts-generator.vercel.app"),
   title: "Social Media Post Generator",
   description: "Generate engaging social media posts for your products with AI",
   icons: {
@@ -24,7 +22,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Social Media Post Generator",
-    description: "Generate engaging social media posts for your products with AI",
+    description:
+      "Generate engaging social media posts for your products with AI",
     images: [
       {
         url: "/image.png",
@@ -38,7 +37,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Social Media Post Generator",
-    description: "Generate engaging social media posts for your products with AI",
+    description:
+      "Generate engaging social media posts for your products with AI",
     images: ["/image.png"],
   },
 };

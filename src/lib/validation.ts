@@ -44,9 +44,9 @@ export interface ValidationError {
   message: string;
 }
 
-export function formatZodErrors(error: z.ZodError): ValidationError[] {
-  return error.errors.map((err) => ({
-    field: err.path.join("."),
-    message: err.message,
+export function formatZodErrors(error: z.ZodError<unknown>): ValidationError[] {
+  return error.issues.map((issue) => ({
+    field: issue.path.join("."),
+    message: issue.message,
   }));
 }
