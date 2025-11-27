@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Flex,
   IconButton,
+  Link,
 } from "@chakra-ui/react"
 import { Product, Tone, Platform, Language } from "@/types"
 import {
@@ -20,7 +21,7 @@ import {
 } from "@/constants"
 import { validateProduct } from "@/utils/validation"
 import { Input, Textarea, Select, Toggle, Button, ColorModeButton } from "@/components/ui"
-import { BoltIcon, SparklesIcon, SpinnerIcon, DiceIcon } from "@/components/icons"
+import { BoltIcon, SparklesIcon, SpinnerIcon, DiceIcon, GitHubIcon } from "@/components/icons"
 import {
   ToneSelector,
   PlatformSelector,
@@ -73,8 +74,25 @@ export default function Home() {
       </Flex>
 
       <Container maxW="5xl" px={0}>
-        {/* Color Mode Toggle */}
-        <Flex justify="flex-end" mb={4}>
+        {/* Color Mode Toggle & GitHub Link */}
+        <Flex justify="flex-end" gap={2} mb={4}>
+          <Link
+            href="https://github.com/kstulgys/social-posts-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            w={9}
+            h={9}
+            borderRadius="md"
+            color="text.secondary"
+            _hover={{ color: "text.primary", bg: "background.hover" }}
+            transition="all 0.2s"
+          >
+            <GitHubIcon size={20} />
+          </Link>
           <ColorModeButton />
         </Flex>
 
