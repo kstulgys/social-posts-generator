@@ -1,8 +1,9 @@
 "use server";
 
 import { generateSocialMediaPosts } from "@/lib/generate";
+import { generateProductDescription } from "@/lib/openai";
 import { GenerateRequestSchema, formatZodErrors } from "@/lib/validation";
-import { SocialMediaPost } from "@/lib/types";
+import { SocialMediaPost, Language } from "@/lib/types";
 
 export interface GenerateResult {
   success: true;
@@ -69,6 +70,61 @@ export async function generatePostsAction(product: {
     return {
       success: false,
       error: "An unexpected error occurred",
+      code: "INTERNAL_ERROR",
+    };
+  }
+}
+
+export interface DescriptionResult {
+  success: true;
+  description: string;
+}
+
+export interface DescriptionError {
+  success: false;
+  error: string;
+  code: string;
+}
+
+export type DescriptionResponse = DescriptionResult | DescriptionError;
+
+export async function generateDescriptionAction(
+  productName: string,
+  language: string = "en"
+): Promise<DescriptionResponse> {
+  try {
+    if (!productName || productName.trim().length === 0) {
+      return {
+        success: false,
+        error: "Product name is required",
+        code: "VALIDATION_ERROR",
+      };
+    }
+
+    const description = await generateProductDescription(
+      productName.trim(),
+      language as Language
+    );
+
+    return {
+      success: true,
+      description,
+    };
+  } catch (error) {
+    console.error("Error generating description:", error);
+
+    if (error instanceof Error && "code" in error) {
+      const appError = error as Error & { code: string };
+      return {
+        success: false,
+        error: appError.message,
+        code: appError.code,
+      };
+    }
+
+    return {
+      success: false,
+      error: "Failed to generate description",
       code: "INTERNAL_ERROR",
     };
   }

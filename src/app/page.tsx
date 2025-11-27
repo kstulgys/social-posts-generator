@@ -9,8 +9,12 @@ import {
   VStack,
   SimpleGrid,
   Flex,
+  IconButton,
 } from "@chakra-ui/react";
-import { generatePostsAction } from "@/actions/generate";
+import {
+  generatePostsAction,
+  generateDescriptionAction,
+} from "@/actions/generate";
 import { Product, SocialMediaPost, Tone, Platform, Language } from "@/types";
 import {
   CATEGORY_OPTIONS,
@@ -22,7 +26,7 @@ import {
 } from "@/constants";
 import { validateProduct, isValidPriceInput } from "@/utils/validation";
 import { Input, Textarea, Select, Toggle, Button } from "@/components/ui";
-import { BoltIcon } from "@/components/icons";
+import { BoltIcon, SparklesIcon, SpinnerIcon } from "@/components/icons";
 import {
   ToneSelector,
   PlatformSelector,
@@ -48,6 +52,7 @@ export default function Home() {
   const [posts, setPosts] = useState<SocialMediaPost[]>([]);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const errors = useMemo(() => validateProduct(product), [product]);
@@ -68,6 +73,29 @@ export default function Home() {
     if (isValidPriceInput(value)) {
       setPriceInput(value);
       updateProduct("price", value === "" ? 0 : parseFloat(value) || 0);
+    }
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!product.name.trim()) {
+      setTouched((prev) => ({ ...prev, name: true }));
+      return;
+    }
+
+    setIsGeneratingDescription(true);
+
+    try {
+      const result = await generateDescriptionAction(
+        product.name,
+        product.language || DEFAULT_LANGUAGE
+      );
+      if (result.success) {
+        updateProduct("description", result.description);
+      }
+    } catch {
+      // Silently fail for description generation
+    } finally {
+      setIsGeneratingDescription(false);
     }
   };
 
@@ -177,10 +205,29 @@ export default function Home() {
               onChange={(e) => updateProduct("description", e.target.value)}
               onBlur={() => handleBlur("description")}
               placeholder="Revolutionary reusable water bottle with built-in UV purification..."
-              disabled={isLoading}
+              disabled={isLoading || isGeneratingDescription}
               error={touched.description ? errors.description : undefined}
               showCount
               maxLength={VALIDATION.DESCRIPTION_MAX_LENGTH}
+              actionButton={
+                <IconButton
+                  aria-label="Generate description with AI"
+                  size="xs"
+                  variant="ghost"
+                  onClick={handleGenerateDescription}
+                  disabled={
+                    isLoading || isGeneratingDescription || !product.name.trim()
+                  }
+                  color="purple.400"
+                  _hover={{ bg: "purple.500/20" }}
+                >
+                  {isGeneratingDescription ? (
+                    <SpinnerIcon size={14} />
+                  ) : (
+                    <SparklesIcon size={14} />
+                  )}
+                </IconButton>
+              }
             />
 
             {/* Price, Category, and Language Row */}

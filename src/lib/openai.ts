@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { SocialMediaPost, AppError } from "./types";
+import { SocialMediaPost, AppError, Language, LANGUAGE_NAMES } from "./types";
 import { config } from "./config";
 
 let client: OpenAI | null = null;
@@ -96,5 +96,59 @@ export async function callOpenAI(prompt: string): Promise<SocialMediaPost[]> {
     throw new AppError("An unexpected error occurred while generating posts", "INTERNAL_ERROR", 500, {
       originalError: error instanceof Error ? error.message : String(error),
     });
+  }
+}
+
+export async function generateProductDescription(
+  productName: string,
+  language: Language = "en"
+): Promise<string> {
+  const openaiClient = getClient();
+  const languageName = LANGUAGE_NAMES[language];
+
+  try {
+    const response = await openaiClient.chat.completions.create({
+      model: config.generation.model,
+      messages: [
+        {
+          role: "system",
+          content: "You are a marketing copywriter. Write concise, engaging product descriptions.",
+        },
+        {
+          role: "user",
+          content: `Write a brief product description for "${productName}". 
+Requirements:
+- 1-2 sentences only
+- Highlight key benefits or features
+- Make it engaging and marketable
+${language !== "en" ? `- Write in ${languageName}` : ""}
+
+Return only the description text, no quotes or extra formatting.`,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 150,
+    });
+
+    const content = response.choices[0]?.message?.content;
+
+    if (!content) {
+      throw new AppError("OpenAI returned an empty response", "OPENAI_ERROR", 502);
+    }
+
+    return content.trim();
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    if (error instanceof OpenAI.APIError) {
+      if (error.status === 429) {
+        throw new AppError("OpenAI rate limit exceeded. Please try again later.", "OPENAI_RATE_LIMIT", 429);
+      }
+      throw new AppError(error.message || "OpenAI API error", "OPENAI_ERROR", error.status || 502);
+    }
+
+    throw new AppError("Failed to generate description", "INTERNAL_ERROR", 500);
   }
 }
