@@ -18,17 +18,17 @@ AI-powered social media content generator that creates engaging, platform-optimi
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | Next.js 16 (App Router, Server Actions) |
-| **Language** | TypeScript 5 |
-| **UI Library** | Chakra UI v3 |
-| **State Management** | Valtio |
-| **AI** | OpenAI API (GPT-4o) |
-| **Validation** | Zod 4 |
-| **Runtime** | Bun |
-| **Styling** | Emotion |
-| **Fonts** | Space Grotesk, DM Sans |
+| Category             | Technology                              |
+| -------------------- | --------------------------------------- |
+| **Framework**        | Next.js 16 (App Router, Server Actions) |
+| **Language**         | TypeScript 5                            |
+| **UI Library**       | Chakra UI v3                            |
+| **State Management** | Valtio                                  |
+| **AI**               | OpenAI API (GPT-4o)                     |
+| **Validation**       | Zod 4                                   |
+| **Runtime**          | Bun                                     |
+| **Styling**          | Emotion                                 |
+| **Fonts**            | Space Grotesk, DM Sans                  |
 
 ## Getting Started
 
@@ -59,10 +59,10 @@ Visit http://localhost:3000
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Yes |
-| `NEXT_PUBLIC_APP_URL` | Production URL for metadata | No |
+| Variable              | Description                 | Required |
+| --------------------- | --------------------------- | -------- |
+| `OPENAI_API_KEY`      | Your OpenAI API key         | Yes      |
+| `NEXT_PUBLIC_APP_URL` | Production URL for metadata | No       |
 
 ## Scripts
 
@@ -116,6 +116,7 @@ src/
 ### Other Platforms
 
 The app can be deployed to any platform that supports Next.js:
+
 - Netlify
 - Railway
 - Docker

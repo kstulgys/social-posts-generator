@@ -1,14 +1,77 @@
 "use client";
 
 import { Box, Flex, Text, SimpleGrid } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+
+const FUNNY_MESSAGES = [
+  "Brewing creativity...",
+  "Teaching AI about your product...",
+  "Consulting the social media gods...",
+  "Crafting viral content...",
+  "Sprinkling engagement magic...",
+  "Channeling influencer energy...",
+  "Asking ChatGPT's cool cousin...",
+  "Converting caffeine to content...",
+  "Summoning the algorithm...",
+  "Generating hashtag wisdom...",
+  "Polishing pixels...",
+  "Convincing AI this is important...",
+  "Mixing memes with marketing...",
+  "Loading witty remarks...",
+  "Optimizing for dopamine hits...",
+  "Befriending the engagement fairy...",
+  "Translating vibes to posts...",
+  "Cooking up something special...",
+  "Manifesting viral potential...",
+  "Downloading creativity.exe...",
+]
+
+function FunnyLoadingMessage() {
+  const [messageIndex, setMessageIndex] = useState(0)
+  const [dots, setDots] = useState("")
+
+  useEffect(() => {
+    // Cycle through messages every 2.5 seconds
+    const messageInterval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % FUNNY_MESSAGES.length)
+    }, 2500)
+
+    // Animate dots every 400ms
+    const dotsInterval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "" : prev + "."))
+    }, 400)
+
+    return () => {
+      clearInterval(messageInterval)
+      clearInterval(dotsInterval)
+    }
+  }, [])
+
+  const message = FUNNY_MESSAGES[messageIndex].replace("...", "")
+
+  return (
+    <Flex align="center" gap={2}>
+      <Text
+        as="h2"
+        fontSize="2xl"
+        fontWeight="semibold"
+        className="gradient-text"
+        minW="300px"
+      >
+        {message}
+        <Text as="span" display="inline-block" w="24px" textAlign="left">
+          {dots}
+        </Text>
+      </Text>
+    </Flex>
+  )
+}
 
 export function LoadingSkeleton() {
   return (
     <Box>
       <Flex align="center" justify="space-between" mb={6}>
-        <Text as="h2" fontSize="2xl" fontWeight="semibold" color="text.primary">
-          Generating Posts...
-        </Text>
+        <FunnyLoadingMessage />
       </Flex>
       <SimpleGrid columns={{ base: 1, lg: 2 }} gap={6}>
         {[1, 2, 3, 4, 5, 6].map((i) => (
