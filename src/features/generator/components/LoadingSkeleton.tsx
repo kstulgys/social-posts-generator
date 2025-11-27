@@ -1,39 +1,47 @@
 "use client";
 
 import { Box, Flex, Text, SimpleGrid } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const FUNNY_MESSAGES = [
-  "Brewing creativity...",
-  "Teaching AI about your product...",
-  "Consulting the social media gods...",
-  "Crafting viral content...",
-  "Sprinkling engagement magic...",
-  "Channeling influencer energy...",
-  "Asking ChatGPT's cool cousin...",
-  "Converting caffeine to content...",
-  "Summoning the algorithm...",
-  "Generating hashtag wisdom...",
-  "Polishing pixels...",
-  "Convincing AI this is important...",
-  "Mixing memes with marketing...",
-  "Loading witty remarks...",
-  "Optimizing for dopamine hits...",
-  "Befriending the engagement fairy...",
-  "Translating vibes to posts...",
-  "Cooking up something special...",
-  "Manifesting viral potential...",
-  "Downloading creativity.exe...",
+  "Brewing creativity",
+  "Teaching AI about your product",
+  "Consulting the social media gods",
+  "Crafting viral content",
+  "Sprinkling engagement magic",
+  "Channeling influencer energy",
+  "Asking ChatGPT's cool cousin",
+  "Converting caffeine to content",
+  "Summoning the algorithm",
+  "Generating hashtag wisdom",
+  "Polishing pixels",
+  "Convincing AI this is important",
+  "Mixing memes with marketing",
+  "Loading witty remarks",
+  "Optimizing for dopamine hits",
+  "Befriending the engagement fairy",
+  "Translating vibes to posts",
+  "Cooking up something special",
+  "Manifesting viral potential",
+  "Downloading creativity.exe",
 ]
 
 function FunnyLoadingMessage() {
   const [messageIndex, setMessageIndex] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
   const [dots, setDots] = useState("")
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    // Cycle through messages every 2.5 seconds
+    // Cycle through messages every 2.5 seconds with animation
     const messageInterval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % FUNNY_MESSAGES.length)
+      setIsAnimating(true)
+      
+      // After exit animation (300ms), change the message
+      timeoutRef.current = setTimeout(() => {
+        setMessageIndex((prev) => (prev + 1) % FUNNY_MESSAGES.length)
+        setIsAnimating(false)
+      }, 300)
     }, 2500)
 
     // Animate dots every 400ms
@@ -44,26 +52,33 @@ function FunnyLoadingMessage() {
     return () => {
       clearInterval(messageInterval)
       clearInterval(dotsInterval)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
   }, [])
 
-  const message = FUNNY_MESSAGES[messageIndex].replace("...", "")
+  const message = FUNNY_MESSAGES[messageIndex]
 
   return (
-    <Flex align="center" gap={2}>
+    <Box position="relative" h="36px">
       <Text
         as="h2"
         fontSize="2xl"
         fontWeight="semibold"
         className="gradient-text"
-        minW="300px"
+        whiteSpace="nowrap"
+        lineHeight="36px"
+        style={{
+          transform: isAnimating ? "translateY(-10px)" : "translateY(0)",
+          opacity: isAnimating ? 0 : 1,
+          transition: "transform 0.3s ease-in-out, opacity 0.3s ease-in-out",
+        }}
       >
         {message}
-        <Text as="span" display="inline-block" w="24px" textAlign="left">
+        <Text as="span" display="inline-block" w="30px" textAlign="left">
           {dots}
         </Text>
       </Text>
-    </Flex>
+    </Box>
   )
 }
 
