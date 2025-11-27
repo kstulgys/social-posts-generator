@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Text, SimpleGrid, Button } from "@chakra-ui/react";
 import { Tone } from "@/types";
 import { TONE_OPTIONS } from "@/constants";
 
@@ -16,7 +16,7 @@ export function ToneSelector({ value, onChange, disabled }: ToneSelectorProps) {
       <Text fontSize="sm" fontWeight="medium" color="text.secondary" mb={3}>
         Tone & Style
       </Text>
-      <Flex flexWrap="wrap" gap={2}>
+      <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} gap={2}>
         {TONE_OPTIONS.map((option) => {
           const isSelected = value === option.value;
           return (
@@ -49,7 +49,7 @@ export function ToneSelector({ value, onChange, disabled }: ToneSelectorProps) {
             </Button>
           );
         })}
-      </Flex>
+      </SimpleGrid>
     </Box>
   );
 }

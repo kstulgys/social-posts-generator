@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Text, SimpleGrid, Button } from "@chakra-ui/react";
 import { Platform } from "@/types";
 import { PLATFORM_OPTIONS } from "@/constants";
 import { TwitterIcon, InstagramIcon, LinkedInIcon, CheckIcon } from "@/components/icons";
@@ -32,7 +32,7 @@ export function PlatformSelector({ value, onChange, disabled, error }: PlatformS
       <Text fontSize="sm" fontWeight="medium" color="text.secondary" mb={3}>
         Platforms <Text as="span" color="pink.500">*</Text>
       </Text>
-      <Flex flexWrap="wrap" gap={3}>
+      <SimpleGrid columns={{ base: 2, sm: 3 }} gap={3}>
         {PLATFORM_OPTIONS.map((option) => {
           const isSelected = value.includes(option.value);
           return (
@@ -43,6 +43,7 @@ export function PlatformSelector({ value, onChange, disabled, error }: PlatformS
               disabled={disabled}
               display="flex"
               alignItems="center"
+              justifyContent="center"
               gap={2}
               px={4}
               py={2.5}
@@ -69,7 +70,7 @@ export function PlatformSelector({ value, onChange, disabled, error }: PlatformS
             </Button>
           );
         })}
-      </Flex>
+      </SimpleGrid>
       {error && (
         <Text mt={2} fontSize="sm" color="red.400">
           {error}
