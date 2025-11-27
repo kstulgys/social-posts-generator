@@ -51,7 +51,7 @@ export function Select({ label, options, required, disabled, value, onChange }: 
             border="1px solid"
             borderColor="border.default"
             borderRadius="xl"
-            color="white"
+            color="text.primary"
             fontWeight="normal"
             textAlign="left"
             justifyContent="space-between"
@@ -94,10 +94,10 @@ export function Select({ label, options, required, disabled, value, onChange }: 
                   py={2.5}
                   cursor="pointer"
                   bg={value === option.value ? "purple.500/20" : "transparent"}
-                  color={value === option.value ? "white" : "text.secondary"}
+                  color={value === option.value ? "text.primary" : "text.secondary"}
                   _hover={{
                     bg: "purple.500/10",
-                    color: "white",
+                    color: "text.primary",
                   }}
                 >
                   {option.label}

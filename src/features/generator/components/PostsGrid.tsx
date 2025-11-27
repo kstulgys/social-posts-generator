@@ -14,13 +14,15 @@ export function PostsGrid({ posts }: PostsGridProps) {
   return (
     <Box>
       <Flex align="center" justify="space-between" mb={6}>
-        <Text as="h2" fontSize="2xl" fontWeight="semibold" color="white">
+        <Text as="h2" fontSize="2xl" fontWeight="semibold" color="text.primary">
           Generated Posts
         </Text>
         <Text
           fontSize="sm"
-          color="text.muted"
-          bg="gray.800/50"
+          color="text.secondary"
+          bg="background.secondary"
+          border="1px solid"
+          borderColor="border.default"
           px={3}
           py={1}
           borderRadius="full"

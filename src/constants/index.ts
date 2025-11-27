@@ -69,3 +69,21 @@ export const VALIDATION = {
   DESCRIPTION_MAX_LENGTH: 2000,
   PRICE_MAX: 1000000,
 } as const;
+
+export const SAMPLE_PRODUCTS = [
+  { name: "EcoBottle Pro", price: 49.99, category: "Health & Wellness" },
+  { name: "SmartDesk 3000", price: 599.00, category: "Technology" },
+  { name: "AirPods Ultra", price: 299.99, category: "Electronics" },
+  { name: "Zen Yoga Mat", price: 89.00, category: "Sports & Fitness" },
+  { name: "GlowSkin Serum", price: 65.00, category: "Beauty & Skincare" },
+  { name: "CloudSleep Pillow", price: 129.00, category: "Home & Living" },
+  { name: "FitTrack Watch", price: 199.99, category: "Electronics" },
+  { name: "Organic Coffee Blend", price: 24.99, category: "Food & Beverage" },
+  { name: "Minimalist Backpack", price: 79.00, category: "Fashion & Apparel" },
+  { name: "Pet GPS Tracker", price: 59.99, category: "Pets & Animals" },
+  { name: "Solar Power Bank", price: 45.00, category: "Electronics" },
+  { name: "Meditation App Pro", price: 9.99, category: "Health & Wellness" },
+  { name: "Bamboo Toothbrush Set", price: 15.00, category: "Health & Wellness" },
+  { name: "Noise-Canceling Earbuds", price: 149.00, category: "Electronics" },
+  { name: "Plant-Based Protein", price: 39.99, category: "Food & Beverage" },
+] as const;

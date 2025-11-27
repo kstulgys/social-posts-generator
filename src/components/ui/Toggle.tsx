@@ -24,7 +24,7 @@ export function Toggle({ checked, onChange, disabled, label, description }: Togg
       {(label || description) && (
         <Box>
           {label && (
-            <Text fontSize="sm" fontWeight="medium" color="white">
+            <Text fontSize="sm" fontWeight="medium" color="text.primary">
               {label}
             </Text>
           )}
@@ -43,7 +43,7 @@ export function Toggle({ checked, onChange, disabled, label, description }: Togg
       >
         <Switch.HiddenInput />
         <Switch.Control
-          bg={checked ? "linear-gradient(to right, #8b5cf6, #ec4899)" : "gray.600"}
+          bg={checked ? "linear-gradient(to right, #8b5cf6, #ec4899)" : "border.light"}
           _disabled={{
             opacity: 0.5,
             cursor: "not-allowed",

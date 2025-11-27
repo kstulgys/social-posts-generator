@@ -4,16 +4,40 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Ambient background effects */
+/* Body styles for color modes */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.dark body {
+  background-color: #09090f;
+  color: #ffffff;
+}
+
+html.light body {
+  background-color: #fafafa;
+  color: #18181b;
+}
+
+/* Ambient background effects - only visible in dark mode */
 .ambient-glow {
   position: fixed;
   width: 600px;
   height: 600px;
   border-radius: 50%;
   filter: blur(150px);
-  opacity: 0.15;
+  opacity: 0;
   pointer-events: none;
   z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+html.dark .ambient-glow {
+  opacity: 0.15;
+}
+
+html.light .ambient-glow {
+  opacity: 0;
 }
 
 .ambient-glow-purple {

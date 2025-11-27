@@ -60,10 +60,10 @@ export function PlatformSelector({ value, onChange, disabled, error }: PlatformS
               transition="all 0.2s"
               bg={isSelected ? "linear-gradient(to right, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2), rgba(249, 115, 22, 0.2))" : "background.secondary"}
               borderColor={isSelected ? "purple.500/50" : "border.default"}
-              color={isSelected ? "white" : "text.secondary"}
+              color={isSelected ? "text.primary" : "text.secondary"}
               _hover={{
                 borderColor: isSelected ? "purple.500/50" : "border.light",
-                color: isSelected ? "white" : "text.primary",
+                color: "text.primary",
               }}
               _disabled={{
                 opacity: 0.5,

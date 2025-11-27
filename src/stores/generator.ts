@@ -1,6 +1,6 @@
 import { proxy } from "valtio"
-import { Product, SocialMediaPost } from "@/types"
-import { DEFAULT_PLATFORMS, DEFAULT_LANGUAGE, ERROR_MESSAGES } from "@/constants"
+import { Product, SocialMediaPost, Tone, Platform } from "@/types"
+import { DEFAULT_PLATFORMS, DEFAULT_LANGUAGE, ERROR_MESSAGES, SAMPLE_PRODUCTS, TONE_OPTIONS } from "@/constants"
 import { validateProduct, isValidPriceInput } from "@/utils/validation"
 import {
   generatePostsAction,
@@ -129,5 +129,33 @@ export const generatorActions = {
     generatorState.isLoading = false
     generatorState.isGeneratingDescription = false
     generatorState.error = null
+  },
+
+  async tryRandomProduct() {
+    // Pick random sample product
+    const randomProduct = SAMPLE_PRODUCTS[Math.floor(Math.random() * SAMPLE_PRODUCTS.length)]
+    
+    // Pick random tone
+    const tones: Tone[] = ["professional", "casual", "humorous", "urgent", "inspirational"]
+    const randomTone = tones[Math.floor(Math.random() * tones.length)]
+    
+    // Pick random platforms (1-3)
+    const allPlatforms: Platform[] = ["twitter", "instagram", "linkedin"]
+    const numPlatforms = Math.floor(Math.random() * 3) + 1
+    const shuffled = [...allPlatforms].sort(() => Math.random() - 0.5)
+    const randomPlatforms = shuffled.slice(0, numPlatforms)
+
+    // Update product with random values
+    generatorState.product.name = randomProduct.name
+    generatorState.product.price = randomProduct.price
+    generatorState.product.category = randomProduct.category
+    generatorState.product.tone = randomTone
+    generatorState.product.platforms = randomPlatforms
+    generatorState.priceInput = randomProduct.price.toString()
+    generatorState.posts = []
+    generatorState.error = null
+
+    // Generate description with AI
+    await generatorActions.generateDescription()
   },
 }

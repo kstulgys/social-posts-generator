@@ -51,10 +51,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${spaceGrotesk.variable} ${dmSans.variable}`}
+      className={`${spaceGrotesk.variable} ${dmSans.variable}`}
       suppressHydrationWarning
     >
-      <body style={{ background: "#09090f", color: "#ffffff" }}>
+      <body>
         {/* Ambient background glows */}
         <div className="ambient-glow ambient-glow-purple" />
         <div className="ambient-glow ambient-glow-pink" />

@@ -201,7 +201,7 @@ export default function PostCard({ platform, content }: PostCardProps) {
             YB
           </Flex>
           <Box>
-            <Text fontWeight="semibold" fontSize="sm" color="white">
+            <Text fontWeight="semibold" fontSize="sm" color="text.primary">
               Your Business
             </Text>
             <Text fontSize="xs" color="text.muted">
@@ -324,7 +324,7 @@ export default function PostCard({ platform, content }: PostCardProps) {
 
           {/* Character count with progress bar */}
           <Flex align="center" gap={2.5}>
-            <Box w={16} h={1.5} bg="gray.800" borderRadius="full" overflow="hidden">
+            <Box w={16} h={1.5} bg="border.default" borderRadius="full" overflow="hidden">
               <Box
                 h="100%"
                 borderRadius="full"

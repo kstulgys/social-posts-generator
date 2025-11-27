@@ -65,7 +65,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             border="1px solid"
             borderColor={error ? "red.500/50" : "border.default"}
             borderRadius="xl"
-            color="white"
+            color="text.primary"
             _placeholder={{ color: "text.muted" }}
             _focus={{
               outline: "none",

@@ -20,21 +20,6 @@ const config = defineConfig({
           800: { value: "#6b21a8" },
           900: { value: "#581c87" },
         },
-        background: {
-          primary: { value: "#09090f" },
-          secondary: { value: "#0f0f17" },
-          card: { value: "#12121a" },
-          cardHover: { value: "#1a1a24" },
-        },
-        border: {
-          default: { value: "#1f1f2e" },
-          light: { value: "#2a2a3e" },
-        },
-        text: {
-          primary: { value: "#ffffff" },
-          secondary: { value: "#a1a1aa" },
-          muted: { value: "#71717a" },
-        },
         gradient: {
           start: { value: "#8b5cf6" },
           middle: { value: "#ec4899" },
@@ -44,19 +29,60 @@ const config = defineConfig({
     },
     semanticTokens: {
       colors: {
-        bg: {
-          DEFAULT: { value: "{colors.background.primary}" },
-          subtle: { value: "{colors.background.secondary}" },
-          muted: { value: "{colors.background.card}" },
-        },
-        fg: {
-          DEFAULT: { value: "{colors.text.primary}" },
-          muted: { value: "{colors.text.secondary}" },
-          subtle: { value: "{colors.text.muted}" },
+        background: {
+          primary: {
+            value: { _light: "#fafafa", _dark: "#09090f" },
+          },
+          secondary: {
+            value: { _light: "#ffffff", _dark: "#0f0f17" },
+          },
+          card: {
+            value: { _light: "#ffffff", _dark: "#12121a" },
+          },
+          cardHover: {
+            value: { _light: "#f4f4f5", _dark: "#1a1a24" },
+          },
         },
         border: {
-          DEFAULT: { value: "{colors.border.default}" },
-          muted: { value: "{colors.border.light}" },
+          default: {
+            value: { _light: "#d4d4d8", _dark: "#1f1f2e" },
+          },
+          light: {
+            value: { _light: "#a1a1aa", _dark: "#2a2a3e" },
+          },
+        },
+        text: {
+          primary: {
+            value: { _light: "#18181b", _dark: "#ffffff" },
+          },
+          secondary: {
+            value: { _light: "#52525b", _dark: "#a1a1aa" },
+          },
+          muted: {
+            value: { _light: "#a1a1aa", _dark: "#71717a" },
+          },
+        },
+        bg: {
+          DEFAULT: {
+            value: { _light: "{colors.background.primary}", _dark: "{colors.background.primary}" },
+          },
+          subtle: {
+            value: { _light: "{colors.background.secondary}", _dark: "{colors.background.secondary}" },
+          },
+          muted: {
+            value: { _light: "{colors.background.card}", _dark: "{colors.background.card}" },
+          },
+        },
+        fg: {
+          DEFAULT: {
+            value: { _light: "{colors.text.primary}", _dark: "{colors.text.primary}" },
+          },
+          muted: {
+            value: { _light: "{colors.text.secondary}", _dark: "{colors.text.secondary}" },
+          },
+          subtle: {
+            value: { _light: "{colors.text.muted}", _dark: "{colors.text.muted}" },
+          },
         },
       },
     },
@@ -70,18 +96,18 @@ const config = defineConfig({
     "*::selection": {
       bg: "brand.500/30",
     },
-    "::-webkit-scrollbar": {
+    ".dark ::-webkit-scrollbar": {
       width: "8px",
       height: "8px",
     },
-    "::-webkit-scrollbar-track": {
+    ".dark ::-webkit-scrollbar-track": {
       background: "#0f0f17",
     },
-    "::-webkit-scrollbar-thumb": {
+    ".dark ::-webkit-scrollbar-thumb": {
       background: "#2a2a3e",
       borderRadius: "4px",
     },
-    "::-webkit-scrollbar-thumb:hover": {
+    ".dark ::-webkit-scrollbar-thumb:hover": {
       background: "#3a3a4e",
     },
   },

@@ -19,8 +19,8 @@ import {
   DEFAULT_LANGUAGE,
 } from "@/constants"
 import { validateProduct } from "@/utils/validation"
-import { Input, Textarea, Select, Toggle, Button } from "@/components/ui"
-import { BoltIcon, SparklesIcon, SpinnerIcon } from "@/components/icons"
+import { Input, Textarea, Select, Toggle, Button, ColorModeButton } from "@/components/ui"
+import { BoltIcon, SparklesIcon, SpinnerIcon, DiceIcon } from "@/components/icons"
 import {
   ToneSelector,
   PlatformSelector,
@@ -58,7 +58,7 @@ export default function Home() {
       >
         <Text
           fontSize={{ base: "xs", sm: "sm" }}
-          color="orange.300"
+          color={{ base: "orange.600", _dark: "orange.300" }}
           textAlign="center"
         >
           <Text as="span" fontSize={{ base: "sm", sm: "md" }}>
@@ -73,13 +73,18 @@ export default function Home() {
       </Flex>
 
       <Container maxW="5xl" px={0}>
+        {/* Color Mode Toggle */}
+        <Flex justify="flex-end" mb={4}>
+          <ColorModeButton />
+        </Flex>
+
         {/* Header */}
         <Box as="header" textAlign="center" mb={12}>
           <Heading as="h1" size="4xl" mb={4}>
             <Text as="span" className="gradient-text">
               Social Media
             </Text>{" "}
-            <Text as="span" color="white">
+            <Text as="span" color="text.primary">
               Post Generator
             </Text>
           </Heading>
@@ -99,6 +104,19 @@ export default function Home() {
           mb={8}
           boxShadow="0 0 40px -10px rgba(139, 92, 246, 0.3)"
         >
+          {/* Try Random Product Button */}
+          <Flex justify="flex-end" mb={4}>
+            <Button
+              onClick={generatorActions.tryRandomProduct}
+              disabled={state.isLoading || state.isGeneratingDescription}
+              isLoading={state.isGeneratingDescription}
+              variant="secondary"
+              icon={<DiceIcon size={16} />}
+            >
+              Try Random
+            </Button>
+          </Flex>
+
           <VStack gap={6} align="stretch">
             {/* Product Name */}
             <Input
