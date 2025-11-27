@@ -110,7 +110,7 @@ export default function Home() {
               onClick={generatorActions.tryRandomProduct}
               disabled={state.isLoading || state.isGeneratingDescription}
               isLoading={state.isGeneratingDescription}
-              variant="secondary"
+              variant="rainbow"
               icon={<DiceIcon size={16} />}
             >
               Try Random

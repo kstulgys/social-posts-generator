@@ -8,7 +8,7 @@ interface ButtonProps {
   children: ReactNode;
   isLoading?: boolean;
   loadingText?: string;
-  variant?: "gradient" | "secondary";
+  variant?: "gradient" | "secondary" | "rainbow";
   icon?: ReactNode;
   disabled?: boolean;
   onClick?: () => void;
@@ -24,6 +24,7 @@ export function Button({
   onClick,
 }: ButtonProps) {
   const isGradient = variant === "gradient";
+  const isRainbow = variant === "rainbow";
 
   return (
     <ChakraButton
@@ -39,12 +40,12 @@ export function Button({
       borderRadius="full"
       color="white"
       transition="all 0.3s"
-      className={isGradient ? "btn-gradient" : undefined}
-      bg={isGradient ? undefined : "gray.700"}
+      className={isGradient ? "btn-gradient" : isRainbow ? "btn-rainbow" : undefined}
+      bg={isGradient || isRainbow ? undefined : "gray.700"}
       _hover={{
         transform: disabled || isLoading ? "none" : "translateY(-2px)",
-        boxShadow: disabled || isLoading ? "none" : isGradient ? "0 10px 40px -10px rgba(139, 92, 246, 0.5)" : undefined,
-        bg: isGradient ? undefined : "gray.600",
+        boxShadow: disabled || isLoading ? "none" : isGradient ? "0 10px 40px -10px rgba(139, 92, 246, 0.5)" : isRainbow ? "0 10px 40px -10px rgba(251, 191, 36, 0.5)" : undefined,
+        bg: isGradient || isRainbow ? undefined : "gray.600",
       }}
       _disabled={{
         opacity: 0.5,
